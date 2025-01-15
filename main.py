@@ -94,8 +94,8 @@ def update_user_table(user_list=None):
 
     # 인덱스(#0) + (user, message_count, ...)
     for i, (user, st) in enumerate(user_list, start=1):
-        j = st["joined"].strftime("%Y-%m-%d %H:%M:%S") if st["joined"] else ""
-        l = st["left"].strftime("%Y-%m-%d %H:%M:%S") if st["left"] else ""
+        j = st["joined"].strftime("%Y-%m-%d") if st["joined"] else ""
+        l = st["left"].strftime("%Y-%m-%d") if st["left"] else ""
         f = st["first_message_time"].strftime("%Y-%m-%d %H:%M:%S") if st["first_message_time"] else ""
         la = st["last_message_time"].strftime("%Y-%m-%d %H:%M:%S") if st["last_message_time"] else ""
 
