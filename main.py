@@ -98,12 +98,12 @@ def update_user_table(user_list=None):
         l = st["left"].strftime("%Y-%m-%d") if st["left"] else ""
         f = st["first_message_time"].strftime("%Y-%m-%d %H:%M:%S") if st["first_message_time"] else ""
         la = st["last_message_time"].strftime("%Y-%m-%d %H:%M:%S") if st["last_message_time"] else ""
-
+        mlc = st["message_letters_count"]  # 문자 수 가져오기
         user_table.insert(
             "",
             "end",
             text=str(i),  # 인덱스
-            values=(user, st["message_count"], f, la, j, l)
+            values=(user, st["message_count"], mlc, f, la, j, l)
         )
 
 def show_user_details(event):
@@ -305,19 +305,32 @@ bottom_frame.pack(side="bottom", fill="both", expand=True, padx=10, pady=10)
 scroll = tk.Scrollbar(bottom_frame, orient="vertical")
 scroll.pack(side="right", fill="y")
 
-columns = ("user", "message_count", "first_message_time", "last_message_time", "joined_time", "left_time")
+columns = ("user", "message_count", "message_letters_count", "first_message_time", "last_message_time", "joined_time", "left_time")
 user_table = ttk.Treeview(bottom_frame, columns=columns, height=15, show="headings", yscrollcommand=scroll.set)
 
 # (1) 인덱스(#0) 컬럼 활성화
 user_table["show"] = ("tree","headings")
+user_table.column("#0", width=50, minwidth=30, anchor="center")  # 인덱스 컬럼 폭 조정
 user_table.heading("#0", text="No.")   # 인덱스 컬럼
 
 user_table.heading("user", text="User")
 user_table.heading("message_count", text="Message Count")
+user_table.column("message_count", width=120, anchor="center")
+
+user_table.heading("message_letters_count", text="Message Letters Count")
+user_table.column("message_letters_count", width=150, anchor="center")
+
 user_table.heading("first_message_time", text="First Msg Time")
+user_table.column("first_message_time", width=180, anchor="center")
+
 user_table.heading("last_message_time", text="Last Msg Time")
+user_table.column("last_message_time", width=180, anchor="center")
+
 user_table.heading("joined_time", text="Joined")
+user_table.column("joined_time", width=120, anchor="center")
+
 user_table.heading("left_time", text="Left")
+user_table.column("left_time", width=120, anchor="center")
 
 user_table.pack(side="left", fill="both", expand=True)
 scroll.config(command=user_table.yview)

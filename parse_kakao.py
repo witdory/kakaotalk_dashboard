@@ -41,6 +41,7 @@ def parse_kakao_chat(chat_data):
             user, action = join_leave_match.groups()
             if not current_date:
                 current_date = datetime.now()
+                # current_date = None
             messages.append({
                 "type": "system",
                 "user": user,

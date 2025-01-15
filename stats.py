@@ -11,8 +11,10 @@ def analyze_user_activity(messages):
         "message_count": 0,
         "first_message_time": None,
         "last_message_time": None,
+        "message_letters_count":0,
         "joined": None,
         "left": None,
+        "now_in": None,
     })
 
     for msg in messages:
@@ -23,12 +25,28 @@ def analyze_user_activity(messages):
             if action == "들어왔습니다":
                 if user_stats[user]["joined"] is None:
                     user_stats[user]["joined"] = msg["time"]
+
+                user_stats[user]["left"] = None
+                user_stats[user]["now_in"] = True
+
+
+
+            # elif action == "나갔습니다":
+            #     if (user_stats[user]["left"] is None) or (msg["time"] > user_stats[user]["left"]):
+            #         user_stats[user]["left"] = msg["time"]
+            #         user_stats[user]["now_in"] = False
+
             elif action == "나갔습니다":
-                if (user_stats[user]["left"] is None) or (msg["time"] > user_stats[user]["left"]):
+                if user_stats[user]["now_in"]: # 현재 입장 상태인 경우만 처리
                     user_stats[user]["left"] = msg["time"]
+                    user_stats[user]["now_in"] = False
+
+
         else:
             # 일반 메시지
             user_stats[user]["message_count"] += 1
+            user_stats[user]["message_letters_count"] += len(msg["message"])
+
             t = msg["time"]
             if user_stats[user]["first_message_time"] is None or t < user_stats[user]["first_message_time"]:
                 user_stats[user]["first_message_time"] = t
