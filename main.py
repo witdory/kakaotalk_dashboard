@@ -124,12 +124,40 @@ def show_user_details(event):
     # 좌/우 레이아웃
     left_frame = tk.Frame(details_win)
     left_frame.pack(side="left", fill="both", expand=False)
+    
+    left_upper_frame = tk.Frame(left_frame)
+    left_upper_frame.pack(side="top", fill="both")
+
+    left_lower_frame = tk.Frame(left_frame)
+    left_lower_frame.pack(side="top", fill="both")
+
 
     right_frame = tk.Frame(details_win)
     right_frame.pack(side="left", fill="both", expand=True)
 
     # (1) 왼쪽 라인차트 (개별 유저용)
-    plot_user_line_chart(messages, user, left_frame)
+    plot_user_line_chart(messages, user, left_upper_frame)
+
+    #왼쪽 차트 하단 텍스트
+    join_history_text = tk.Text(left_lower_frame, wrap="word")
+    join_history_text.pack(fill="both", expand=True)
+
+
+     # 사용자 입장/퇴장 기록 작성
+    user_stats_entry = user_stats.get(user, {})
+    join_time = user_stats_entry.get("joined")
+    leave_time = user_stats_entry.get("left")
+
+
+    history_text = f"사용자: {user}\n"
+    # history_text += f"입장 시간: {join_time.strftime('%Y-%m-%d %H:%M:%S') if join_time else '정보 없음'}\n"
+    # history_text += f"퇴장 시간: {leave_time.strftime('%Y-%m-%d %H:%M:%S') if leave_time else '정보 없음'}\n"
+    # history_text += f"현재 방 상태: {'현재 방에 있음' if user_stats_entry.get('now_in') else '퇴장함'}\n"
+    # history_text += "".join(user_stats_entry["join_history"])
+    history_text += "\n".join(user_stats_entry.get("join_history", []))
+    print(history_text)
+    join_history_text.insert("1.0", history_text)
+    join_history_text.config(state="disabled")  # 수정 불가로 설정
 
     # (2) 오른쪽 텍스트
     scroll = tk.Scrollbar(right_frame, orient="vertical")
