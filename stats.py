@@ -30,7 +30,7 @@ def analyze_user_activity(messages):
                 user_stats[user]["left"] = None
                 user_stats[user]["now_in"] = True
                 # user_stats[user]["join_history"].append(msg["time"]+" " + "입장\n")
-                user_stats[user]["join_history"].append(msg["time"].strftime("%Y-%m-%d %H:%M:%S") + " 입장\n")
+                user_stats[user]["join_history"].append(msg["time"].strftime("%Y-%m-%d") + " 입장\n")
 
 
 
@@ -40,7 +40,7 @@ def analyze_user_activity(messages):
             #         user_stats[user]["now_in"] = False
 
             elif action == "나갔습니다":
-                user_stats[user]["join_history"].append(msg["time"].strftime("%Y-%m-%d %H:%M:%S") + " 퇴장\n")
+                user_stats[user]["join_history"].append(msg["time"].strftime("%Y-%m-%d") + " 퇴장\n")
 
                 if user_stats[user]["now_in"]: # 현재 입장 상태인 경우만 처리
                     user_stats[user]["left"] = msg["time"]

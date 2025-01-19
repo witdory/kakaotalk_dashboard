@@ -140,8 +140,7 @@ def show_user_details(event):
 
     #왼쪽 차트 하단 텍스트
     join_history_text = tk.Text(left_lower_frame, wrap="word")
-    join_history_text.pack(fill="both", expand=True)
-
+    join_history_text.pack(fill="both", expand=True, padx=10, pady=10)
 
      # 사용자 입장/퇴장 기록 작성
     user_stats_entry = user_stats.get(user, {})
@@ -154,7 +153,7 @@ def show_user_details(event):
     # history_text += f"퇴장 시간: {leave_time.strftime('%Y-%m-%d %H:%M:%S') if leave_time else '정보 없음'}\n"
     # history_text += f"현재 방 상태: {'현재 방에 있음' if user_stats_entry.get('now_in') else '퇴장함'}\n"
     # history_text += "".join(user_stats_entry["join_history"])
-    history_text += "\n".join(user_stats_entry.get("join_history", []))
+    history_text += "".join(user_stats_entry.get("join_history", []))
     print(history_text)
     join_history_text.insert("1.0", history_text)
     join_history_text.config(state="disabled")  # 수정 불가로 설정
@@ -170,6 +169,8 @@ def show_user_details(event):
     for msg in user_messages:
         t_str = msg["time"].strftime("%Y-%m-%d %H:%M:%S")
         text_widget.insert("end", f"[{t_str}] {msg['message']}\n")
+    text_widget.config(state="disabled")# 수정 불가로 설정
+    
 
 def open_custom_pie_calendar():
     """
@@ -232,7 +233,7 @@ def open_custom_line_calendar():
 # 아래부터 GUI 설정
 # -----------------------
 root = tk.Tk()
-root.title("카카오톡 대화 분석 프로그램")
+root.title("카카오톡 이용자 분석 프로그램")
 
 # 상단 버튼들
 button_frame = tk.Frame(root)
@@ -241,24 +242,24 @@ button_frame.pack(pady=5, fill="x")
 load_btn = tk.Button(button_frame, text="파일 열기", command=load_file, font=("Arial", 12))
 load_btn.pack(side="left", padx=5)
 
-day_button = tk.Button(button_frame, text="파이차트(1일)", 
+day_button = tk.Button(button_frame, text="대화 점유율(1일)", 
                        command=lambda: plot_pie_chart_period(messages, left_subframe, middle_subframe, "day"))
 day_button.pack(side="left", padx=5)
 
-week_button = tk.Button(button_frame, text="파이차트(1주일)", 
+week_button = tk.Button(button_frame, text="대화 점유율(1주일)", 
                         command=lambda: plot_pie_chart_period(messages, left_subframe, middle_subframe, "week"))
 week_button.pack(side="left", padx=5)
 
-month_button = tk.Button(button_frame, text="파이차트(1개월)", 
+month_button = tk.Button(button_frame, text="대화 점유율(1개월)", 
                          command=lambda: plot_pie_chart_period(messages, left_subframe, middle_subframe, "month"))
 month_button.pack(side="left", padx=5)
 
 # 파이차트 전체 기간 버튼
-btn_pie_full = tk.Button(button_frame, text="파이차트(전체)", 
+btn_pie_full = tk.Button(button_frame, text="대화 점유율(전체)", 
                          command=lambda: plot_pie_chart_custom(messages, left_subframe, middle_subframe, None, None))
 btn_pie_full.pack(side="left", padx=5)
 
-btn_pie_custom = tk.Button(button_frame, text="Custom Range(점유율 차트)", 
+btn_pie_custom = tk.Button(button_frame, text="Custom Range(대화 점유율)", 
                            command=open_custom_pie_calendar, font=("Arial", 10))
 btn_pie_custom.pack(side="left", padx=5)
 
